@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+    <style>
+      td:first-child {
+          width:10em;
+        font-weight:bold;
+      }
+
+      #clearButton{
+        font-size:large;
+      }
+      #clearButton:hover{
+        display:inline-block;
+        width:2em;
+        box-shadow:3px 3px 3px grey;
+        text-align:center;
+        border-radius:30%;
+      }
+       .popup {
+            position: absolute;
+            background-color: black;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            z-index: 1000;
+            display: none;
+            pointer-events: none; /* Prevent interfering with clicks */
+            white-space: nowrap;
+        }
+      
+      table {
+        table-layout: fixed; 
+        width: 100%;
+      }
+      td {
+        white-space: nowrap; 
+        overflow: hidden;    
+        text-overflow: ellipsis; /* Add ... for overflowes */
+      }
+      
+
+    </style>
+</head>
+
+<body>
+    <div id="messages"></div>
+    <span id="clearButton" onclick="sendCommand('clear')" title="Clear messages.">
+      🪄
+    </span>
+    <script>
+        const serverURL = '/';
+        const divMessages   = document.getElementById("messages");
+      
+        function   displayData(data) {
+          let displayMode = "none";
+          let messages = "No messages!";
+          
+          if(data.length > 0){
+              displayMode = "block";
+              
+              messages = '<table class="table table-bordered table-striped">';
+
+              data.forEach((d) => {
+                messages += `<tr><td>${d.name}</td><td title='click to copy' onClick='copyText(event)'>${d.body}</td></tr>`;
+              });
+              messages += "</table>";
+          }
+          divMessages.innerHTML = messages;
+          document.getElementById("clearButton").style.display = displayMode;
+          
+        }
+        
+       
+        function copyText(event) {
+          
+            navigator.clipboard.writeText(event.target.innerText);
+            // console.log(event.target.innerText);
+            const popup = document.getElementById('popup');
+            popup.style.left = event.pageX + 'px'; 
+            popup.style.top = event.pageY + 'px'; 
+            popup.style.display = 'block';
+
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 500);
+        }
+      
+        function sendCommand(command) {
+            let msg = {
+                name: "trainer",
+                body: command
+            };
+            socket.emit("message", msg);
+        }
+        //-------------------------------------------------------------
+        const socket = io(serverURL);
+        socket.on("connection");
+        sendCommand("refresh");  // any text will refresh the display!
+      
+        socket.on("message", (data) => {
+            displayData(data);
+        });
+    </script>
+  
+    <div class="popup" id="popup">Copied!</div>
+
+</body>
+</html>

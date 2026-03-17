@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/index.js" defer></script>
+    <link href="/index.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="grid-container">
+        <div class="header">
+            <div class="qaLogo"> <img src="qa_logo.svg" /> </div>
+            <div id="course_title"></div>
+            <h3 id="trainer"></h3>
+        </div>
+      <div id="timer_container">
+        <qa-timer id="qaTimer"></qa-timer> 
+      </div>
+
+        <div class="passwords">
+            <emoji>&#128218</emoji>
+            <a id="material" href="" target="_blank">
+                Course material
+            </a>
+            <button onclick="copy(courseData.password1)">Copy email</button>
+            <button onclick="copy(courseData.password2)">Copy password</button>
+            <button onclick="copy(courseData.password3)">Copy access code</button>
+            <button onclick="mimeo()">Mimeo</button> 
+        </div>
+        <div class="pcs">
+            <ol id="pcs"></ol>
+            <div style="display: flex">
+                <textarea rows="1" id="txtArea" style="display: none"></textarea>
+            </div>
+        </div>
+
+        <div class="afa">
+            <select id="cboMessages" style="display:none"></select>
+            <h3><img src="webcam.svg" /> Please turn your webcam on 😊</h3>
+        </div>
+
+        <div class="students"><object id="studentMessages" data="/chat/student"></object></div>
+        <div class="messages">
+            <div class="MessagesDiv">
+                <object data="/chat/trainer" height="750" width="100%"></object>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
