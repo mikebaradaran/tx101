@@ -7,10 +7,10 @@ const port = process.env.PORT || 3000;
 // ========================
 // MongoDB setup
 // ========================
-const username = "mikeb";        // your DB username
-const password = "Password123";
+// const username = "mikeb";        // your DB username
+// const password = "Password123";
 const dbName = "test";
-const mongoUri = `mongodb+srv://${username}:${password}@cluster0.smk7bk1.mongodb.net/${dbName}?retryWrites=true&w=majority`;
+const mongoUri = `mongodb+srv://mikeb:Password123@cluster0.smk7bk1.mongodb.net/test?retryWrites=true&w=majority`;
 const client = new MongoClient(mongoUri);
 let collection;
 

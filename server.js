@@ -30,7 +30,7 @@ async function initDB() {
   console.log("MongoDB connected");
 }
 
-initDB().catch(console.error);
+await initDB(); //.catch(console.error);
 
 async function saveAll(res) {
   let chats = [
