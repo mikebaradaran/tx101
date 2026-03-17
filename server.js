@@ -21,6 +21,7 @@ console.log(mongoURL);
 
 const client = new MongoClient(mongoURL);
 let collection;
+const dbName = "test";
 
 async function initDB() {
   await client.connect();
