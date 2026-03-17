@@ -4,6 +4,7 @@ const setup = require("./routes/setup");
 const commentJS = require("./comments.js");
 const serverUtils = require("./serverUtils.js");
 const path = require("path");
+const { MongoClient } = require("mongodb");
 
 const fs = require("fs");
 const cors = require("cors");
@@ -14,6 +15,40 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 app.set("view engine", "ejs");
+
+const mongoURL = process.env.mongoURL;
+console.log(mongoURL);
+
+const client = new MongoClient(mongoUri);
+let collection;
+
+async function initDB() {
+  await client.connect();
+  const db = client.db(dbName);
+  collection = db.collection("chatHistory"); // collection for chat messages
+  console.log("MongoDB connected");
+}
+
+initDB().catch(console.error);
+
+async function saveAll(res) {
+  let chats = [
+    { name: "Alice", message: "Hello!" },
+    { name: "Bob", message: "Hi Alice!" }
+  ];
+  try {
+    await collection.deleteMany({}); // clear old messages
+    await collection.insertMany(chats); // save current chat array
+    res.send({ success: true, saved: chats.length });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error saving chats");
+  }
+}
+// Save chat array to MongoDB
+app.get("/save", async (req, res) => {
+  saveAll(res);
+});
 
 // Middleware to parse urlencoded form data
 app.use(express.urlencoded({ extended: true }));
