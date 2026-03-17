@@ -19,7 +19,7 @@ app.set("view engine", "ejs");
 const mongoURL = process.env.mongoURL;
 console.log(mongoURL);
 
-const client = new MongoClient(mongoUri);
+const client = new MongoClient(mongoURL);
 let collection;
 
 async function initDB() {
