@@ -21,27 +21,82 @@ app.set("view engine", "ejs");
 const mongoURL = `mongodb+srv://mikeb:Password123@cluster0.smk7bk1.mongodb.net/test?retryWrites=true&w=majority`;
 
 const client = new MongoClient(mongoURL);
-let collection;
+let chatHistoryTable;
+let startDataTable;
 const dbName = "test";
 
 async function initDB() {
   await client.connect();
   const db = client.db(dbName);
-  collection = db.collection("chatHistory"); // collection for chat messages
-  console.log("MongoDB connected");
+  chatHistoryTable = db.collection("chatHistory"); // collection for chat messages
+  startDataTable = db.collection("startData");     // collection for startData JSON format
 }
 
 initDB(); //.catch(console.error);
 
-async function saveAll(res) {
-  let chats = [
-    { name: "Alice", message: "Hello!" },
-    { name: "Bob", message: "Hi Alice!" }
-  ];
+let chats = [
+  { name: "Alice", message: "Hello again Bob!" },
+  { name: "Bob", message: "Hi Alice, How are you?" }
+];
+let startData =
+{
+  "audio": "https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg",
+  "trainer": "Mike Baradaran - mike.baradaran@qa.com",
+  "course_title": "Design and DevOps",
+  "code": "AEDXD3SE4M4",
+  "pin": "4855725-18",
+  "webex_email": "qa.webex026@qa.com",
+  "material": "https://github.com/mikebaradaran/Mod4.git",
+  "mimeo": "AEDXD3SE4M4",
+  "pcs": [
+    "https://www.gotomypc.com/sc/DC490DC64F5C055F3E63819CE77C847C",
+    "https://www.gotomypc.com/sc/307DE551850E1F31350E919CE77CBC61",
+    "https://www.gotomypc.com/sc/B4785EA4C87D438FFE3E619CE77CF66C",
+    "https://www.gotomypc.com/sc/B7A933F48500536E4DC2919CE77D291D",
+    "https://www.gotomypc.com/sc/FAED1F6FC836399E61FAE19CE77D6335",
+    "https://www.gotomypc.com/sc/594FC4F264A2E591B171919CE77DA5A0",
+    "https://www.gotomypc.com/sc/FC4226AB9A5295172333419CE77DE041",
+    "https://www.gotomypc.com/sc/991A18E05DF791EC1373A19CE77E2B21",
+    "https://www.gotomypc.com/sc/43CED8D5C85D7B77D565D19CE77E645D",
+    "https://www.gotomypc.com/sc/E62C483FC8588C46C987219CE77EA6CE",
+    "https://www.gotomypc.com/sc/D168B1B47DE8E19EFAFC419CE77F24A4",
+    "https://www.gotomypc.com/sc/52953D359DB6D419692BD19CE77F6261",
+    "https://www.gotomypc.com/sc/64AC676B830ED3B0E5CB719CE77FDD68",
+    "https://www.gotomypc.com/sc/699354C836205DFA3DEDD19CE7805F47",
+    "https://www.gotomypc.com/sc/962F69B40D801C195E32319CE7801526",
+    "https://www.gotomypc.com/sc/21843321C6DC91F8182FF19CE7809E74",
+    "https://www.gotomypc.com/sc/FD6A41B98B99220B0763519CE780D9F4",
+    "https://www.gotomypc.com/sc/9D44DF0B0C78E7CB2B1B919CE7811419",
+    ""
+  ],
+  "password1": "virtualroom16@qa.com",
+  "password2": "QARemoteClassroom#11",
+  "password3": "password7633",
+  "students": [
+    " Oliver",
+    " Thomas",
+    " James A",
+    " Farzaneh",
+    " Muhammad",
+    " Jamie C",
+    " George",
+    " Benjamin C",
+    " Kian",
+    " Kevin ",
+    " Benjamin H",
+    " Christopher",
+    " Oliver",
+    " Jamie",
+    " Deivis"
+  ],
+  "courseDuration": "3"
+}
+
+async function saveAll(res, table, data) {
   try {
-    await collection.deleteMany({}); // clear old messages
-    await collection.insertMany(chats); // save current chat array
-    res.send({ success: true, saved: chats.length });
+    await table.deleteMany({});
+    await table.insertMany(data);
+    res.send("success");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error saving chats");
@@ -49,7 +104,10 @@ async function saveAll(res) {
 }
 // Save chat array to MongoDB
 app.get("/save", async (req, res) => {
-  saveAll(res);
+  saveAll(res, chatHistoryTable, chats);
+});
+app.get("/start/save", async (req, res) => {
+  saveAll(res, startDataTable, startData);
 });
 
 // Middleware to parse urlencoded form data
@@ -74,16 +132,6 @@ var messages = [];
 app.get("/", (req, res) => {
   res.render("index");
 });
-// const  = path.join(__dirname, "chatHistory.json");
-
-// if (fs.existsSync(historyFile)) {
-//   try {
-//     const data = fs.readFileSync(historyFile, "utf-8");
-//     messages = JSON.parse(data);
-//   } catch (error) {
-//     console.error("Error reading chat history file:", error);
-//   }
-// }
 
 app.get("/student", (req, res) => {
   res.render("studentView");
