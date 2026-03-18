@@ -38,7 +38,7 @@ let chats = [
   { name: "Alice", message: "Hello again Bob!" },
   { name: "Bob", message: "Hi Alice, How are you?" }
 ];
-let startData =
+let startData =[
 {
   "audio":"https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg",
   "trainer":"Mike Baradaran - mike.baradaran@qa.com",
@@ -89,7 +89,7 @@ let startData =
     "Deivis"
   ],
   "courseDuration": 3
-}
+},{"name":"Mike", "message":"Saved!!!!"}];
 
 async function saveAll(res, table, data) {
   try {
