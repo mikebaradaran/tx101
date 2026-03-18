@@ -16,8 +16,9 @@ const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 app.set("view engine", "ejs");
 
-const mongoURL = process.env.mongoURL;
-console.log(mongoURL);
+// const mongoURL = process.env.mongoURL;
+// console.log(mongoURL);
+const mongoURL = `mongodb+srv://mikeb:Password123@cluster0.smk7bk1.mongodb.net/test?retryWrites=true&w=majority`;
 
 const client = new MongoClient(mongoURL);
 let collection;
