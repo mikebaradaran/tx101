@@ -99,7 +99,7 @@ async function saveAll(res, table, data) {
     res.send("success");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error saving chats");
+    res.status(500).send(err);
   }
 }
 // Save chat array to MongoDB
