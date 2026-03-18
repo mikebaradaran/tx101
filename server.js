@@ -40,15 +40,15 @@ let chats = [
 ];
 let startData =
 {
-  "audio": "https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg",
-  "trainer": "Mike Baradaran - mike.baradaran@qa.com",
-  "course_title": "Design and DevOps",
-  "code": "AEDXD3SE4M4",
-  "pin": "4855725-18",
-  "webex_email": "qa.webex026@qa.com",
-  "material": "https://github.com/mikebaradaran/Mod4.git",
-  "mimeo": "AEDXD3SE4M4",
-  "pcs": [
+  "audio":"https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg",
+  "trainer":"Mike Baradaran - mike.baradaran@qa.com",
+  "course_title":"Design and DevOps",
+  "code":"AEDXD3SE4M4",
+  "pin":"4855725-18",
+  "webex_email":"qa.webex026@qa.com",
+  "material":"https://github.com/mikebaradaran/Mod4.git",
+  "mimeo":"AEDXD3SE4M4",
+  "pcs":[
     "https://www.gotomypc.com/sc/DC490DC64F5C055F3E63819CE77C847C",
     "https://www.gotomypc.com/sc/307DE551850E1F31350E919CE77CBC61",
     "https://www.gotomypc.com/sc/B4785EA4C87D438FFE3E619CE77CF66C",
@@ -66,30 +66,29 @@ let startData =
     "https://www.gotomypc.com/sc/962F69B40D801C195E32319CE7801526",
     "https://www.gotomypc.com/sc/21843321C6DC91F8182FF19CE7809E74",
     "https://www.gotomypc.com/sc/FD6A41B98B99220B0763519CE780D9F4",
-    "https://www.gotomypc.com/sc/9D44DF0B0C78E7CB2B1B919CE7811419",
-    ""
+    "https://www.gotomypc.com/sc/9D44DF0B0C78E7CB2B1B919CE7811419"
   ],
   "password1": "virtualroom16@qa.com",
   "password2": "QARemoteClassroom#11",
   "password3": "password7633",
   "students": [
-    " Oliver",
-    " Thomas",
-    " James A",
-    " Farzaneh",
-    " Muhammad",
-    " Jamie C",
-    " George",
-    " Benjamin C",
-    " Kian",
-    " Kevin ",
-    " Benjamin H",
-    " Christopher",
-    " Oliver",
-    " Jamie",
-    " Deivis"
+    "Oliver",
+    "Thomas",
+    "James A",
+    "Farzaneh",
+    "Muhammad",
+    "Jamie C",
+    "George",
+    "Benjamin C",
+    "Kian",
+    "Kevin ",
+    "Benjamin H",
+    "Christopher",
+    "Oliver",
+    "Jamie",
+    "Deivis"
   ],
-  "courseDuration": "3"
+  "courseDuration": 3
 }
 
 async function saveAll(res, table, data) {
@@ -99,7 +98,10 @@ async function saveAll(res, table, data) {
     res.send("success");
   } catch (err) {
     console.error(err);
-    res.status(500).send(err);
+    res.status(500).json({
+      message: err.message,
+      stack: err.stack
+    });
   }
 }
 // Save chat array to MongoDB
